@@ -1,0 +1,21 @@
+/*
+ * lcd.h
+ *
+ *  Created on: Apr 28, 2023
+ *      Author: Sarah
+ */
+
+#ifndef LCD_H_
+#define LCD_H_
+
+
+#include "std_types.h"
+
+
+void Lcd_send_command (uint8 command);
+void Lcd_send_data (uint8 data);
+
+
+
+
+#endif /* LCD_H_ */
