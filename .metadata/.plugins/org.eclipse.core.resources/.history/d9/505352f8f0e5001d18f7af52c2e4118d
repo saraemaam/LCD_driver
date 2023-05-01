@@ -1,0 +1,98 @@
+/*
+ * lcd.c
+ *
+ *  Created on: Apr 28, 2023
+ *      Author: Sarah
+ */
+
+#include "gpio.h"
+#include "lcd.h"
+#include<util/delay.h>
+
+
+void Lcd_send_command (uint8 command)
+{
+
+	//Clear RS pin (to write command)
+	 GPIO_writePin(PORTD_ID, PIN4_ID, LOGIC_LOW);
+
+	 //delay  Tas time=50nsec
+	 _delay_ms(1);
+
+	 //set enable bit
+	 GPIO_writePin(PORTD_ID, PIN5_ID, LOGIC_HIGH);
+	 //delay 190nsec
+
+	 _delay_ms(1);
+
+	 //Send command to PORTC
+
+	 GPIO_writePort(PORTC_ID, command );
+
+	 //delay 100nsec
+
+	 _delay_ms(1);
+
+	 //Clear Enable pin
+
+	 GPIO_writePin(PORTD_ID, PIN5_ID, LOGIC_LOW);
+
+	 //delay
+
+	 _delay_ms(1);
+
+}
+
+void Lcd_display_character(uint8 data)
+{
+
+	//Clear RS pin (to write command)
+	 GPIO_writePin(PORTD_ID, PIN4_ID, LOGIC_HIGH);
+
+	 //delay  Tas time=50nsec
+	 _delay_ms(1);
+
+	 //set enable bit
+	 GPIO_writePin(PORTD_ID, PIN5_ID, LOGIC_HIGH);
+
+	 //delay 190nsec
+	 _delay_ms(1);
+
+	 //Send command to PORTC
+	 GPIO_writePort(PORTC_ID, data );
+
+	 //delay 100nsec
+	 _delay_ms(1);
+
+	 //Clear Enable pin
+	 GPIO_writePin(PORTD_ID, PIN5_ID, LOGIC_LOW);
+
+	 //delay 13nsec
+	 _delay_ms(1);
+
+}
+
+void Lcd_init(void)
+{
+	//Make RS,Enable Output pins
+	GPIO_setupPinDirection(PORTD_ID, PIN4_ID, PORT_OUTPUT);
+	GPIO_setupPinDirection(PORTD_ID, PIN5_ID, PORT_OUTPUT);
+
+	//direction of Data Bus PORTC Outputport
+
+	GPIO_setupPortDirection(PORTC_ID,PORT_OUTPUT);
+
+	_delay_ms(20);
+
+	Lcd_send_command(0x38);
+
+	Lcd_send_command(0x0C);
+
+	Lcd_send_command(0x01);
+
+
+
+
+
+
+}

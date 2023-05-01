@@ -1,0 +1,112 @@
+/*****************************************************************
+ * Module      : LCD module
+ * File name   : lcd.c
+ * Description : Lcd driver to implement configurable LCD driver to
+ *              work with any lcd
+ * Author      : Sarah
+ ****************************************************************/
+
+#include "gpio.h"
+#include "lcd.h"
+#include<util/delay.h>
+
+/*******************************************************************************
+ *                      Functions Definitions                                  *
+ *******************************************************************************/
+
+/* Description:
+ * Initialize LCD :
+ * 1.by setting up the direction using GPIO driver
+ * 2.set up LCD data bit mode 8bit or 4bit mode
+ * */
+void LCD_init(void)
+{
+	/* Configure the direction for RS and E pins as output pins */
+	GPIO_setupPinDirection()
+
+	_delay_ms(20);
+
+	//2 Lines +8bits Mode
+	Lcd_send_command(0x38);
+
+	//Cursor OFF
+	Lcd_send_command(0x0C);
+
+	//Clear screen
+	Lcd_send_command(0x01);
+
+}
+
+void Lcd_send_command (uint8 command)
+{
+
+	//Clear RS pin (to write command)
+	GPIO_writePin(PORTD_ID, PIN4_ID, LOGIC_LOW);
+
+	//delay  Tas time=50nsec
+	_delay_ms(1);
+
+	//set enable bit
+	GPIO_writePin(PORTD_ID, PIN5_ID, LOGIC_HIGH);
+	//delay 190nsec
+
+	_delay_ms(1);
+
+	//Send command to PORTC
+
+	GPIO_writePort(PORTC_ID, command );
+
+	//delay 100nsec
+
+	_delay_ms(1);
+
+	//Clear Enable pin
+
+	GPIO_writePin(PORTD_ID, PIN5_ID, LOGIC_LOW);
+
+	//delay
+
+	_delay_ms(1);
+
+}
+
+void Lcd_display_character(uint8 data)
+{
+
+	//Clear RS pin (to write command)
+	GPIO_writePin(PORTD_ID, PIN4_ID, LOGIC_HIGH);
+
+	//delay  Tas time=50nsec
+	_delay_ms(1);
+
+	//set enable bit
+	GPIO_writePin(PORTD_ID, PIN5_ID, LOGIC_HIGH);
+
+	//delay 190nsec
+	_delay_ms(1);
+
+	//Send command to PORTC
+	GPIO_writePort(PORTC_ID, data);
+
+	//delay 100nsec
+	_delay_ms(1);
+
+	//Clear Enable pin
+	GPIO_writePin(PORTD_ID, PIN5_ID, LOGIC_LOW);
+
+	//delay 13nsec
+	_delay_ms(1);
+
+}
+
+void Lcd_display_string(uint8*string)
+{
+
+	uint8 i=0;
+
+	for (i=0;string[i] !='\0';i++)
+	{
+		Lcd_display_character(string[i]);
+	}
+
+}
