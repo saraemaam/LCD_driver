@@ -1,0 +1,38 @@
+/*
+ * application.c
+ *
+ *  Created on: Apr 28, 2023
+ *      Author: Sarah
+ */
+
+#include"lcd.h"
+
+
+int main(void){
+
+
+	Lcd_init();
+
+	//Lcd_display_character('A');
+
+	Lcd_display_string("Embedded");
+	while(1){
+
+
+
+
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+}
+

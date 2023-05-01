@@ -1,0 +1,57 @@
+/*****************************************************************
+ * Module      : LCD module
+ * File name   : lcd.h
+ * Description : Lcd driver to implement configurable LCD driver to
+ *              work with any lcd
+ * Author      : Sarah
+ ****************************************************************/
+
+#ifndef LCD_H_
+#define LCD_H_
+
+
+#include "std_types.h"
+
+/*****************************************************************
+ *                               Definitions
+ *****************************************************************/
+/* LCD data bits mode should be 4 or 8 */
+#define LCD_DATA_BITS_MODE  4
+
+#if (LCD_DATA_BITS_MODE != 4) && (LCD_DATA_BITS_MODE !=8)
+#error "Number of Data bits should be equal to 4 or 8"
+#endif
+
+/* LCD HW Ports and Pins Ids */
+#define LCD_RS_PORT_ID   PORTA_ID
+#define LCD_RS_PIN_ID    PIN1_ID
+
+#define LCD_E_PORT_ID    PORTA_ID
+#define LCD_E_PIN_ID     PIN2_ID
+
+#define LCD_DATA_PORT_ID PORTA_ID
+
+#if (LCD_DATA_BITS_MODE == 4)
+
+#define LCD_DB4_PIN_ID   PIN3_ID
+#define LCD_DB5_PIN_ID   PIN4_ID
+#define LCD_DB6_PIN_ID   PIN5_ID
+#define LCD_DB7_PIN_ID   PIN6_ID
+
+
+
+
+
+
+/*******************************************************************
+ *                            Function Prototypes
+ ******************************************************************/
+
+void Lcd_send_command (uint8 command);
+void Lcd_display_character(uint8 data);
+void Lcd_init(void);
+void Lcd_display_string(uint8*string);
+
+
+
+#endif /* LCD_H_ */
